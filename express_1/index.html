@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Users App</title>
+</head>
+<body>
+
+  <!-- 👁️ VIEW LAYER - Presentation &amp; User Interface -->
+  <!-- ================================================== -->
+  <!-- This HTML file is the "view" in our MVC architecture. -->
+  <!-- It handles: -->
+  <!--   - Displaying the UI to users -->
+  <!--   - Capturing user input (form fields) -->
+  <!--   - Making HTTP requests to the backend (via JavaScript) -->
+  <!--   - Displaying responses from the server -->
+  <!-- -->
+  <!-- The backend (Express) doesn't know anything about this HTML. -->
+  <!-- The frontend (HTML/JS) communicates with backend only via HTTP API calls. -->
+  <!-- This is SEPARATION OF CONCERNS - each layer is independent! -->
+
+  <h2>Create User</h2>
+
+  <input id="name" placeholder="Name" />
+  <input id="email" placeholder="Email" />
+
+  <button onclick="createUser()">Submit</button>
+  <button onclick="getUsers()">Get Users</button>
+
+  <pre id="output"></pre>
+
+  <script>
+    // ✅ CREATE USER - Sends POST request to backend
+    async function createUser() {
+      // Get values from input fields
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+
+      // Make POST request to backend API
+      const response = await fetch("http://localhost:3000/users", {
+        method: "POST",  // We're creating data
+        headers: {
+          "Content-Type": "application/json"  // Tell server we're sending JSON
+        },
+        body: JSON.stringify({ name, email })  // Convert object to JSON string
+      });
+
+      // Parse the response as JSON
+      const data = await response.json();
+      console.log("Response:", data);
+      alert("User created!");
+    }
+
+    // ✅ GET USERS - Fetches all users from backend and displays them
+    async function getUsers() {
+      // Make GET request to fetch all users
+      const res = await fetch("http://localhost:3000/users");
+      // Parse response as JSON
+      const data = await res.json();
+
+      // Display the users in the <pre> element as formatted JSON
+      document.getElementById("output").innerText =
+        JSON.stringify(data, null, 2);  // null, 2 = pretty-print JSON with indentation
+    }
+  </script>
+
+</body>
+</html>
