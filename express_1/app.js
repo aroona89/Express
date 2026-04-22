@@ -29,28 +29,65 @@
  */
 
 // Import Express framework and path utility
+// express → helps you create server
+// path → helps handle file paths safely
 const express = require("express");
 const path = require("path");
 
 // Create Express application
+// 👉 This creates your backend server
+// Think: “Okay, I now have a server ready to receive requests”
 const app = express();
 
 // Import user routes
+// 👉 You are saying: “All /users api end points related logic is written somewhere else — go get it”
 const userRoutes = require("./routes/userRoutes");
 
 // ⚙️ MIDDLEWARE - Functions that process every incoming request
-// Parse incoming request bodies as JSON (e.g., POST data)
+// When frontend sends:
+// fetch("/users", {
+//   method: "POST",
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+//   body: JSON.stringify({ name: "Ali", email: "ali@email.com" }),
+// });
+// 📦 What actually arrives at backend
+// Without middleware: req.body → raw stream / undefined (not parsed)
+// 👉 Server cannot understand it directly
+// ⚙️ What app.use(express.json()) does
+// app.use(express.json());
+// 👉 It: Reads incoming request body
+// Parses JSON string
+// Converts it into JavaScript object
 app.use(express.json());
 
 // Serve static files (HTML, CSS, JavaScript) from current directory
+// __dirname is a special variable in Node.js that gives you the absolute path of the directory where the current file (app.js) is located.
+// __dirname → “The folder where this current file (app.js) exists”
 app.use(express.static(__dirname));
 
 // 🛣️ ROUTES - Map specific URLs to our route handlers
 // Any request to /users goes to userRoutes (GET, POST, GET/:id)
+// ❌ Not this: “middleware is only validation or authentication”
+// ✅ Correct: Middleware = anything that runs between request and response
+// Router middleware is responsible for directing traffic to the right controller function based on the URL and HTTP method.
 app.use("/users", userRoutes);
 
 // Home route - serves the index.html file
 app.get("/", (req, res) => {
+  //   1️⃣ __dirname
+  // __dirname = current folder where app.js is located
+  // So if your project is:
+  // project/
+  //  ├── app.js
+  //  ├── index.html
+  // 👉 __dirname = project/
+  // 2️⃣ path.join(...)
+  // path.join(__dirname, "index.html")
+  // 👉 Builds a safe file path:
+  // project/index.html
+  // ✔ Works on Windows + Linux safely
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
@@ -58,3 +95,10 @@ app.get("/", (req, res) => {
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
 });
+
+// 📝 SUMMARY:
+// app.js
+// 👉 Entry point + server setup (Controller layer dispatcher)
+// It doesn’t contain business logic — it connects everything together.
+// 🧩 Think of it like a traffic controller
+// Incoming Request → app.js → routes → controller → response

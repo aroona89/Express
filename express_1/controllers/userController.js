@@ -14,6 +14,7 @@
  */
 
 // Import the users data from our "database"
+// 👉 This is your in-memory database (array)
 const users = require("../data/users");
 
 // ✅ GET all users - returns the complete list of users
@@ -60,3 +61,14 @@ exports.getUserById = (req, res) => {
   // User found - send it back as JSON
   res.json(user);
 };
+
+
+
+// Summary:
+// userController.js is the core of backend logic. Once this clicks, Express stops feeling abstract.
+// 🧠 What is this file?
+// 👉 This is your Controller layer
+// It contains the “actual work” for each API request
+// 🧩 Big picture flow
+// Request → Route → Controller → Data → Response
+// So this file = “what should happen when request arrives”

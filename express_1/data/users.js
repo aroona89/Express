@@ -12,7 +12,19 @@
  */
 
 // This is our "fake database" - in a real app, this would be a real database like MongoDB
-// For now, we store user data in a JavaScript array that lives in memory
+// It behaves like a database, but it stores user data in a JavaScript array that lives in memory
+// ❌ What it is NOT
+// No SQL
+// No tables
+// No persistence
+// No server storage
+// If you restart server:
+// ALL DATA IS LOST ❌
+// Because:
+// It lives in RAM
+// Not saved anywhere
+// ✅ What it actually is
+// A temporary memory store inside Node.js process
 const users = [
     {
         id: 0,
@@ -26,5 +38,15 @@ const users = [
     }
 ];
 
-// Export the users array so other files can import and use it
+// 📤 Export the users array so other files can import and use it
 module.exports = users;
+
+
+
+// 🔁 Why it still works for learning
+// Because it simulates:
+// Concept	Fake version
+// Database	array
+// table row	object
+// SELECT	find()
+// INSERT	push()
