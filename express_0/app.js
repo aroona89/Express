@@ -7,11 +7,27 @@ const express = require("express");
 const app = express();
 // 👉 This creates your server
 // app = your backend application
+// 👉 Express internally does something like: http.createServer(app);
 
 const port = 3000;
 // 👉 This sets the port number for the server
 //  Server will run on: http://localhost:3000
 
+// Define a route handler for the default home page
+// Express -  separate handlers per route 
+// “Run this function ONLY when a GET request comes to /”
+// So this is a route handler.
+// 🧠 What Express is actually doing
+// Express internally does this for you:
+// Incoming request
+//       ↓
+// Check URL + method
+//       ↓
+// Match route (/)
+//       ↓
+// Run handler (req, res)
+// So Express is basically:
+// 🚀 “smart router + helpers on top of Node HTTP”
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -20,10 +36,11 @@ app.get("/", (req, res) => {
 // 👉 Server responds with:
 // Hello World!
 
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`);
 });
-// 👉 This turns the server ON
+// Starting server 👉This turns the server ON
 
 
 // This code shows a minimal "HelloWorld" Express web application. Create a server → define one route → start it
