@@ -65,6 +65,9 @@ app.use(express.json());
 // Serve static files (HTML, CSS, JavaScript) from current directory
 // __dirname is a special variable in Node.js that gives you the absolute path of the directory where the current file (app.js) is located.
 // __dirname → “The folder where this current file (app.js) exists”
+// 💡 MIDDLEWARE TIMING: This doesn't "declare consent"—it activates AUTOMATICALLY on every incoming request.
+//    For ANY request, express.static() checks if a matching file exists in __dirname. If found, it serves the file.
+//    If not found (e.g., /users route), it passes the request to the next handler. No explicit routing needed.
 app.use(express.static(__dirname));
 
 // 🛣️ ROUTES - Map specific URLs to our route handlers
@@ -75,6 +78,9 @@ app.use(express.static(__dirname));
 app.use("/users", userRoutes);
 
 // Home route - serves the index.html file
+// 💡 IMPORTANT: This route ONLY handles GET / and sends the HTML. It does NOT serve CSS/JS/image dependencies.
+//    When the browser loads index.html and encounters <script src="index.js">, it makes a new request (GET /index.js).
+//    Without app.use(express.static()), that request will 404. You NEED BOTH to fully work: this route + static middleware.
 app.get("/", (req, res) => {
   //   1️⃣ __dirname
   // __dirname = current folder where app.js is located
